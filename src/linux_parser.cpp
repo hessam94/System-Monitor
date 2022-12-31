@@ -70,14 +70,14 @@ vector<int> LinuxParser::Pids() {
 
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() {
-  // Total used memory = (MemTotal - MemFree ) / total
-  float total, free;
+  // Total used memory = (MemTotal - MemFree ) / MemTotal
+  float total = -1.0, free =-1.0;
   string key;
   string val;
   string line;
   std::ifstream stream(kProcDirectory + kMeminfoFilename);
   if (stream.is_open()) {
-    while (std::getline(stream, line))
+    while (std::getline(stream, line) && total != -1.0 && free != -1.0)
     {
     std::istringstream linestream(line);
     linestream >> key >> val;

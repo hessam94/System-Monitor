@@ -17,11 +17,31 @@ using std::vector;
 
 You need to properly format the uptime. Refer to the comments mentioned in format. cpp for formatting the uptime.*/
 
+
 // TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
-// TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+// This is not completely correct, what happens if a process get killed, so we need to create a new processes every time and fill it
+// but for this project i guess it works.
+vector<Process>& System::Processes() {
+    vector<int> Pids = LinuxParser::Pids();
+    set<int> PidsSet(Pids.begin(), Pids.end());
+    for (auto& pr : processes_)
+    {
+        auto it = PidsSet.find(pr.Pid());
+        if (it != PidsSet.end())
+            PidsSet.erase(it);
+    } 
+
+    // rest of the processes, the new ones that was not among them
+    for (auto& pr : PidsSet)
+    {
+        Process p(pr);
+        processes_.push_back(p);
+    }
+
+    
+     return processes_; }
 
 std::string System::Kernel() { return LinuxParser::Kernel(); }
 

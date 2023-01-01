@@ -146,9 +146,17 @@ int LinuxParser::RunningProcesses() {
   return std::stoi(process);
 }
 
-// TODO: Read and return the command associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Command(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Command(int pid) { 
+  string Command = "No_Command_For_This_PID",key;
+  string line;
+  std::ifstream stream(kProcDirectory + to_string(pid) + kCmdlineFilename);
+  if (stream.is_open()) {
+    std::istringstream linestream(line);
+    linestream >> key;
+    if (key != "") Command = key;
+  }
+  return Command;
+  }
 
 // TODO: Read and return the memory used by a process
 // REMOVE: [[maybe_unused]] once you define the function
@@ -156,11 +164,44 @@ string LinuxParser::Ram(int pid[[maybe_unused]]) { return string(); }
 
 // TODO: Read and return the user ID associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::Uid(int pid[[maybe_unused]]) { return string(); }
+string LinuxParser::Uid(int pid) {
+  
+  string key;
+  string val= "-1";
+  string line;
+  std::ifstream stream(kProcDirectory + to_string(pid) + kStatusFilename);
+  if (stream.is_open()) {
+    while (std::getline(stream, line)){
+    std::istringstream linestream(line);
+    linestream >> key >> val;
+    if (key  == "Uid:") 
+       break;
+    }
+  }
+   return val;
+  }
 
-// TODO: Read and return the user associated with a process
-// REMOVE: [[maybe_unused]] once you define the function
-string LinuxParser::User(int pid[[maybe_unused]]) { return string(); }
+// the format of each line is root:x:0:0:root:/root:/bin/bash
+string LinuxParser::User(int pid) {
+  string userId = Uid(pid); 
+  string line,userName="Not_Found";
+  std::ifstream stream(kPasswordPath);
+  if (stream.is_open()) {
+    while (std::getline(stream, line)){
+    auto one = line.find(':');
+    auto two = line.find(':' , one+1);
+    auto three = line.find(':' , two+1);
+    string temp = line.substr(two+1,three - two -1);
+    if (temp  == userId)
+    {
+       userName = line.substr(0,one); 
+       break;
+    }
+    }
+  }
+  
+  return userName;
+  }
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function

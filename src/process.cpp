@@ -19,7 +19,7 @@ Process::Process(int pid)
 
 int Process::Pid() { return Pid_; }
 
-// TODO: Return this process's CPU utilization
+// https://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat/16736599#16736599
 float Process::CpuUtilization() {
      vector<string> items = LinuxParser::CpuUtilization(Pid());
      string utime = items[0];
@@ -33,6 +33,7 @@ float Process::CpuUtilization() {
      auto Hertz = sysconf(_SC_CLK_TCK);
      auto seconds = uptime - (stol(starttime) / Hertz) ;  
      auto cpu_usage = 100 * ((total_time / Hertz) / seconds);
+     this->CpuUtil_ = cpu_usage;
      return cpu_usage;
     }
 
@@ -46,6 +47,9 @@ long int Process::UpTime() {
     return LinuxParser::UpTime(Pid());
     }
 
-// TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a[[maybe_unused]]) const { return true; }
+
+bool Process::operator<(Process const& a) const {
+    //  if (CpuUtil_ < a.CpuUtil_) return true;
+    //  else return false;
+    return true;
+    }

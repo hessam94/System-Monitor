@@ -40,8 +40,27 @@ vector<Process>& System::Processes() {
         processes_.push_back(p);
     }
 
-    
-     return processes_; }
+    // this will set the cpuUtil property for all live processes , so there will not be any process in the list
+    // with empty cpuutil_. because we overloaded the operator < on Cpuutil_  
+
+    // the problem is here, having thsi code gives me a runtime error, if I comment this two lines then there is no error
+    // but no meaningful soritng later we have
+    for (auto& pr: processes_)
+       pr.CpuUtilization(); 
+
+
+    // simple sort for proceses to have bigger cpuUtil in the beginning 
+     for (int i=0;i< processes_.size();i++)
+        for(int j= i+1;j< processes_.size();j++)
+            if (processes_[i].CpuUtil_ < processes_[j].CpuUtil_)
+                std::swap(processes_[i] , processes_[j]);
+
+     //sort(processes_.begin() , processes_.end());
+     //reverse(processes_.begin() , processes_.end());
+     //sort(processes_.begin() , processes_.end() , std::greater<Process>()) ;
+
+     return processes_; 
+     }
 
 std::string System::Kernel() { return LinuxParser::Kernel(); }
 

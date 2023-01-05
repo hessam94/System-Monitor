@@ -45,8 +45,8 @@ vector<Process>& System::Processes() {
 
     // the problem is here, having thsi code gives me a runtime error, if I comment this two lines then there is no error
     // but no meaningful soritng later we have
-    for (auto& pr: processes_)
-       pr.CpuUtilization(); 
+    //for (auto& pr: processes_)
+      // pr.CpuUtilization(); 
 
 
     // simple sort for proceses to have bigger cpuUtil in the beginning 

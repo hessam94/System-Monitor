@@ -32,7 +32,7 @@ float Process::CpuUtilization() {
      total_time = total_time + stol(cutime) + stol(cstime);
      auto Hertz = sysconf(_SC_CLK_TCK);
      auto seconds = uptime - (stol(starttime) / Hertz) ;  
-     auto cpu_usage = 100 * ((total_time / Hertz) / seconds);
+     auto cpu_usage = 100 * float(float(total_time / Hertz) / seconds);
      //this->CpuUtil_ = cpu_usage;
      return cpu_usage;
      //return 0;

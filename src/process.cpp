@@ -33,13 +33,14 @@ float Process::CpuUtilization() {
      auto Hertz = sysconf(_SC_CLK_TCK);
      auto seconds = uptime - (stol(starttime) / Hertz) ;  
      auto cpu_usage = 100 * ((total_time / Hertz) / seconds);
-     this->CpuUtil_ = cpu_usage;
+     //this->CpuUtil_ = cpu_usage;
      return cpu_usage;
+     //return 0;
     }
 
 string Process::Command() { return LinuxParser::Command(Pid()); }
 
-string Process::Ram() { return LinuxParser::Ram(Pid()); }
+string Process::Ram() { return  LinuxParser::Ram(Pid()); }
 
 string Process::User() { return LinuxParser::User(Pid()); }
 
@@ -49,7 +50,7 @@ long int Process::UpTime() {
 
 
 bool Process::operator<(Process const& a) const {
-    //  if (CpuUtil_ < a.CpuUtil_) return true;
-    //  else return false;
-    return true;
+      if (Pid_ < a.Pid_) return true;
+      else return false;
+    //return true;
     }

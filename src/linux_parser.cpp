@@ -167,15 +167,16 @@ int LinuxParser::RunningProcesses() {
 }
 
 string LinuxParser::Command(int pid) { 
-  string Command = "No_Command_For_This_PID",key;
+  string Cmd = "No_Command_For_This_PID",key;
   string line;
   std::ifstream stream(kProcDirectory + to_string(pid) + kCmdlineFilename);
   if (stream.is_open()) {
+    std::getline(stream,line);
     std::istringstream linestream(line);
     linestream >> key;
-    if (key != "") Command = key;
+    if (key != "") Cmd = key;
   }
-  return Command;
+  return Cmd;
   }
 
 string LinuxParser::Ram(int pid) {

@@ -192,7 +192,7 @@ string LinuxParser::Ram(int pid) {
        break;
     }
   }
-   int Mega = stoi(val) / 1000; // MG Byte 
+   int Mega = stoi(val) / 1024; // MG Byte 
    return to_string(Mega);
  }
 

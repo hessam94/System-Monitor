@@ -33,6 +33,10 @@ vector<Process>& System::Processes()
       processes_.push_back(process);
     }
   }
+
+  // for (auto& p: processes_)
+  //   p.CpuUtilization();
+
   std::sort(processes_.begin(), processes_.end());
   return processes_;
 

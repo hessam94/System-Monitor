@@ -19,6 +19,7 @@ class Process {
   // TODO: Declare any necessary private members
  private:
  int Pid_ = 0;
+ float CpuUtil_ =0;
  
 };
 
